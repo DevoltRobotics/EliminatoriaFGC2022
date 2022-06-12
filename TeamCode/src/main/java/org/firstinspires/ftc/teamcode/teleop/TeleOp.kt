@@ -26,6 +26,10 @@ class TeleOp : LinearOpMode() {
 
             val pose = drive.poseEstimate
 
+            val turbo = 1.0 - ((if(gamepad1.left_trigger > 0.2) {
+                gamepad1.left_trigger
+            } else gamepad1.right_trigger) * 0.8)
+
             val input = Vector2d(
                 (-gamepad1.left_stick_y).toDouble(),
                 (-gamepad1.left_stick_x).toDouble()
@@ -33,7 +37,7 @@ class TeleOp : LinearOpMode() {
 
             drive.setWeightedDrivePower(
                 Pose2d(
-                    input.x, input.y, (-gamepad1.right_stick_x).toDouble()
+                    input.x * turbo, input.y * turbo, (-gamepad1.right_stick_x).toDouble() * turbo
                 )
             )
 
@@ -44,16 +48,17 @@ class TeleOp : LinearOpMode() {
             /* SLIDERS Y BRAZO */
 
             hardware.slider.power = (-gamepad2.left_stick_y).toDouble()
-            hardware.arm.power = (-gamepad2.right_stick_y).toDouble()
+            hardware.arm.power = (-gamepad2.right_stick_x).toDouble() * 0.6 + 0.07
 
-            /* INTAKE */
+            /* CLAW */
 
-            hardware.intake.power =
-                if(gamepad2.a) {
-                    1.0
-                } else if(gamepad2.b) {
-                    -1.0
-                } else 0.0
+            if(gamepad2.a) {
+                hardware.clawLeft.position = Hardware.clawLeftClose
+                hardware.clawRight.position = Hardware.clawRightClose
+            } else if(gamepad2.b) {
+                hardware.clawLeft.position = Hardware.clawLeftOpen
+                hardware.clawRight.position = Hardware.clawRightOpen
+            }
 
             drive.update()
 
