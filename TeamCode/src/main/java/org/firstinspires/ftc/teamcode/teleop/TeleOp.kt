@@ -26,18 +26,22 @@ class TeleOp : LinearOpMode() {
 
             val pose = drive.poseEstimate
 
-            val turbo = 1.0 - ((if(gamepad1.left_trigger > 0.2) {
+            val triggerValue = if(gamepad1.left_trigger > 0.2) {
                 gamepad1.left_trigger
-            } else gamepad1.right_trigger) * 0.8)
+            } else gamepad1.right_trigger
+
+            val turbo = 1.0 - (triggerValue * 0.6)
+
+            telemetry.addData("turbo", turbo)
 
             val input = Vector2d(
-                (-gamepad1.left_stick_y).toDouble(),
-                (-gamepad1.left_stick_x).toDouble()
+                (-gamepad1.left_stick_y).toDouble() * turbo,
+                (-gamepad1.left_stick_x).toDouble() * turbo
             ).rotated(-pose.heading)
 
             drive.setWeightedDrivePower(
                 Pose2d(
-                    input.x * turbo, input.y * turbo, (-gamepad1.right_stick_x).toDouble() * turbo
+                    input.x, input.y, (-gamepad1.right_stick_x).toDouble() * turbo
                 )
             )
 
@@ -48,7 +52,7 @@ class TeleOp : LinearOpMode() {
             /* SLIDERS Y BRAZO */
 
             hardware.slider.power = (-gamepad2.left_stick_y).toDouble()
-            hardware.arm.power = (-gamepad2.right_stick_x).toDouble() * 0.6 + 0.07
+            hardware.arm.power = (-gamepad2.right_stick_y).toDouble() * 0.6 + 0.07
 
             /* CLAW */
 
@@ -58,11 +62,15 @@ class TeleOp : LinearOpMode() {
             } else if(gamepad2.b) {
                 hardware.clawLeft.position = Hardware.clawLeftOpen
                 hardware.clawRight.position = Hardware.clawRightOpen
+            } else if(gamepad2.y) {
+                hardware.clawLeft.position = Hardware.clawLeftWideOpen
+                hardware.clawRight.position = Hardware.clawRightWideOpen
             }
 
             drive.update()
 
             telemetry.addData("heading", pose.heading)
+
             telemetry.update()
         }
     }

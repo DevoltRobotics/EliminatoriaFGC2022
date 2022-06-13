@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode
 
-import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.HardwareMap
-import com.qualcomm.robotcore.hardware.Servo
+import com.qualcomm.robotcore.hardware.*
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive
 
 class Hardware(val hardwareMap: HardwareMap) {
@@ -14,6 +11,9 @@ class Hardware(val hardwareMap: HardwareMap) {
 
         val clawLeftOpen = 0.4
         val clawRightOpen = 0.8
+
+        val clawLeftWideOpen = 0.6
+        val clawRightWideOpen = 0.6
     }
 
     val drive by lazy { SampleMecanumDrive(hardwareMap) }
