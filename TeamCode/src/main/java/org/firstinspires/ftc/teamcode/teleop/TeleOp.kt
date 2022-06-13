@@ -57,14 +57,9 @@ class TeleOp : LinearOpMode() {
             /* CLAW */
 
             if(gamepad2.a) {
-                hardware.clawLeft.position = Hardware.clawLeftClose
-                hardware.clawRight.position = Hardware.clawRightClose
+                hardware.claw.position = Hardware.clawClose
             } else if(gamepad2.b) {
-                hardware.clawLeft.position = Hardware.clawLeftOpen
-                hardware.clawRight.position = Hardware.clawRightOpen
-            } else if(gamepad2.y) {
-                hardware.clawLeft.position = Hardware.clawLeftWideOpen
-                hardware.clawRight.position = Hardware.clawRightWideOpen
+                hardware.claw.position = Hardware.clawOpen
             }
 
             drive.update()
