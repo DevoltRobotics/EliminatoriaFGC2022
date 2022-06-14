@@ -7,7 +7,7 @@ class Hardware(val hardwareMap: HardwareMap) {
 
     companion object {
         val clawClose = 0.6
-        val clawOpen = 0.1
+        val clawOpen = 0.0
     }
 
     val drive by lazy { SampleMecanumDrive(hardwareMap) }
