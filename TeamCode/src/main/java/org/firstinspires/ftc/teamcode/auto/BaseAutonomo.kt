@@ -7,22 +7,21 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence
 
 abstract class BaseAutonomo : LinearOpMode() {
 
-    val hardware by lazy { Hardware(hardwareMap) }
+    val hardware by lazy { Hardware(hardwareMap, telemetry) }
 
     val drive get() = hardware.drive
 
     override fun runOpMode() {
         hardware.init()
 
+        telemetry.addData("!", "CON TODO CHAVOS");
+        telemetry.update()
+
         waitForStart()
 
-        drive.followTrajectorySequenceAsync(sequence())
-
-        while(opModeIsActive()) {
-            drive.update()
-        }
+        run()
     }
 
-    abstract fun sequence(): TrajectorySequence
+    abstract fun run()
 
 }

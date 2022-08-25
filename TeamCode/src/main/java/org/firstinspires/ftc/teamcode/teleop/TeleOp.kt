@@ -57,7 +57,9 @@ class TeleOp : LinearOpMode() {
             /* CLAW */
 
             if(gamepad2.a) {
-                hardware.claw.position = Hardware.clawClose
+                hardware.claw.position = Hardware.clawCloseStone
+            } else if(gamepad2.y) {
+                hardware.claw.position = Hardware.clawCloseCube
             } else if(gamepad2.b) {
                 hardware.claw.position = Hardware.clawOpen
             }
@@ -65,6 +67,7 @@ class TeleOp : LinearOpMode() {
             drive.update()
 
             telemetry.addData("heading", pose.heading)
+            telemetry.addData("claw", hardware.claw.position)
 
             telemetry.update()
         }
